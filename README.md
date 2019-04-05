@@ -7,33 +7,35 @@ This README will explain some choices made for this challenge architecture.
 
 First, to set up the Espresso Android, we need to add theselines into the project gradle:
 
-androidTestImplementation 'com.android.support.test:runner:1.0.2'
-androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-androidTestImplementation 'com.android.support.test:rules:1.0.2'
+	androidTestImplementation 'com.android.support.test:runner:1.0.2'
+	androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+	androidTestImplementation 'com.android.support.test:rules:1.0.2'
 
-And then these for lines for Cucumber:
-First:
-buildscript {
-    repositories {
-        mavenCentral()
-    }
+And then add these lines to set up Cucumber, first add:
 
-    dependencies {
-        classpath 'org.jacoco:org.jacoco.core:0.7.9'
-    }
-}
+	buildscript {
+	    repositories {
+		mavenCentral()
+	    }
 
-apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
+	dependencies {
+		classpath 'org.jacoco:org.jacoco.core:0.7.9'
+		}
+	}
 
-Into dependencies{}:
-androidTestImplementation 'info.cukes:cucumber-android:1.2.5@jar'
-androidTestImplementation 'info.cukes:cucumber-picocontainer:1.2.4'
+	apply plugin: 'com.android.application'
+	apply plugin: 'jacoco'
 
-Then:
-def getTestTags() {
-    return project.hasProperty("tags") ? project.getProperties().get("tags") : ""
-}
+Into dependencies{} add:
+
+	androidTestImplementation 'info.cukes:cucumber-android:1.2.5@jar'
+	androidTestImplementation 'info.cukes:cucumber-picocontainer:1.2.4'
+
+Then add:
+
+	def getTestTags() {
+	    return project.hasProperty("tags") ? project.getProperties().get("tags") : ""
+	}
 
 Now, the structure to run BDD with Cucumber is pretty default and common knowledge, as we try to follow good practices.
 Under androidTests, we create packages (or directories/folders) such as:
@@ -54,5 +56,5 @@ This is where our test cases will be written.
 
 
 
-First clone the git from: ...
+First clone the git from https://github.com/fabiojagun/dextra-desafio-fabio and open Android Studio.
 To run all tests, go to the Java class called Instrumentation and under @Test, then click the Green Arrow.
