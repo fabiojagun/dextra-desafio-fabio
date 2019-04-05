@@ -1,0 +1,73 @@
+// Setting up Jacobo for Cucumber
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.jacoco:org.jacoco.core:0.7.9'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
+
+// Common default set up for Cucumber
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.brunorodrigo.app6alcoholorgasoline"
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testApplicationId "com.brunorodrigo.app6alcoholorgasoline.test"
+        testInstrumentationRunner "com.brunorodrigo.app6alcoholorgasoline.test.Instrumentation"
+    }
+
+    sourceSets {
+        androidTest {
+            assets.srcDirs = ['src/androidTest/assets']
+        }
+    }
+
+    def baseUrl = '"http://api.randomuser.me/"'
+
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+            buildConfigField 'String', 'BASE_URL', baseUrl
+            buildConfigField "String", "TEST_TAGS", "\"${getTestTags()}\""
+
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:design:28.0.0'
+
+    //Setting up Espresso Android
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+
+    //Setting up Cucumber
+    androidTestImplementation 'info.cukes:cucumber-android:1.2.5@jar'
+    androidTestImplementation 'info.cukes:cucumber-picocontainer:1.2.4'
+
+}
+
+// Capture Cucumber tags
+def getTestTags() {
+    return project.hasProperty("tags") ? project.getProperties().get("tags") : ""
+}
